@@ -54,7 +54,6 @@ public class RestApiController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateUser(@PathVariable("id") int id, @RequestBody User user) {
 
-
         User currentUser = userService.findById(id);
 
         if (currentUser == null) {
