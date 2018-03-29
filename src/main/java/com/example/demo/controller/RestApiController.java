@@ -50,4 +50,42 @@ public class RestApiController {
         headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@PathVariable("id") int id, @RequestBody User user) {
+
+
+        User currentUser = userService.findById(id);
+
+        if (currentUser == null) {
+            return new ResponseEntity(new CustomErrorType("Unable to upate. User with id " + id + " not found."),
+                    HttpStatus.NOT_FOUND);
+        }
+
+        currentUser.setName(user.getName());
+        currentUser.setAge(user.getAge());
+        currentUser.setSalary(user.getSalary());
+
+        userService.updateUser(currentUser);
+        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
+
+        User user = userService.findById(id);
+        if (user == null) {
+            return new ResponseEntity(new CustomErrorType("Unable to delete. User with id " + id + " not found."),
+                    HttpStatus.NOT_FOUND);
+        }
+        userService.deleteUserById(id);
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/user/", method = RequestMethod.DELETE)
+    public ResponseEntity<User> deleteAllUsers() {
+
+        userService.deleteAllUsers();
+        return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
 }
