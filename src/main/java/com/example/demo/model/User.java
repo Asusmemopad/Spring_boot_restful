@@ -1,5 +1,8 @@
 package com.example.demo.model;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -9,6 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
+    @NotFound(action = NotFoundAction.IGNORE)
     @Column(name = "id")
     private Integer id;
 
